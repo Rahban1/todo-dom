@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+<body class="box-border">
+    <div class="my-7 uppercase text-center text-3xl border border-black py-1 w-1/3 mx-auto">todo list</div>
+    <div class="flex justify-center items-center gap-5 p-2">
+        <input type="text" class="border border-grey-400 px-4 py-1 rounded-md" placeholder="Enter todo">
+        <button class="bg-green-400 hover:bg-green-500 hover:underline border border-green-800 px-3 py-1 rounded-full transition duration-300 ease-in-out transform hover:scale-105" onclick="onClickHandler()">Add Todo</button>
+    </div>
+    <div id="main" class="flex flex-col gap-4 md:grid md:grid-cols-3 mx-auto"></div>
+
+</body>
+<script>
+    let ctr = 1;
+    function deleteEl(index) {
+        const element = document.getElementById(index);
+        element.parentNode.removeChild(element);
+        ctr = ctr - 1;
+    }
+
+
+    function saveUpdate(id) {
+    const todoDiv = document.getElementById(id);
+    const newText = todoDiv.querySelector('input').value;
+
+    todoDiv.innerHTML = `
+        <div class="todo-text">${newText}</div>
+        <div>
+            <button onclick="updateEl(${id})" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded-full transition duration-300 ease-in-out transform hover:scale-105 mr-2">
+                Edit
+            </button>
+            <button onclick="deleteEl(${id})" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
+                Delete
+            </button>
+        </div>
+    `;
+}
+
+    function updateEl(id) {
+    const todoDiv = document.getElementById(id);
+    const todoText = todoDiv.querySelector('.todo-text').innerText;
+    let text = '';
+    todoDiv.innerHTML = `
+        <input type="text" value="${text}" class=" mr-2 p-1 border border-gray-300 rounded">
+        <div>
+            <button onclick="saveUpdate(${id})" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded transition duration-300 ease-in-out transform hover:scale-105 mr-2">
+                Save
+            </button>
+        </div>
+    `;
+}
+    
+    function onClickHandler() {
+        let value = document.querySelector('input').value;
+        let newDiv = document.createElement('div');
+        newDiv.setAttribute("id",ctr);
+        newDiv.setAttribute("class"," border flex gap-3 border-green-500 capitalize rounded-xl py-1 px-2 hover:bg-green-200 bg-green-300 mx-auto")
+        newDiv.innerHTML = `
+            <div class="todo-text">${value}</div>
+            <button onclick="updateEl(${ctr})" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded-full transition duration-300 ease-in-out transform hover:scale-105 mr-2">
+                Edit
+            </button>
+            <button onclick="deleteEl(${ctr})" class="bg-red-500 hover:bg-red-600 text-white font-bold px-[7px] py-[4px]  rounded-full transition duration-300 ease-in-out transform hover:scale-105">delete</button>`;
+        document.querySelector('#main').appendChild(newDiv);
+        ctr = ctr + 1 ;
+        document.querySelector('input').value = '';
+    }
+</script>
+</html>
